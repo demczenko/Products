@@ -4,6 +4,11 @@ import { useToast } from "./components/ui/use-toast";
 import { TProduct } from "./types/Product";
 import ProductsList from "./components/ProductsList";
 
+const ORIGINS = {
+  beliani: "https://beliani.us:7777",
+  local: "http://localhost:7777",
+};
+
 function App() {
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState<TProduct[]>([]);
@@ -32,7 +37,7 @@ function App() {
     async function getData() {
       try {
         setLoading(true);
-        const response = await fetch(`https://beliani.us:7777/get-products/`, {
+        const response = await fetch(`${ORIGINS.local}/get-products/`, {
           method: "POST",
           body: JSON.stringify(product),
           headers: {
@@ -43,7 +48,7 @@ function App() {
         setAllProducts((prev) => [...prev, ...parsed_products]);
         toast({
           title: "New products added successfully.",
-          description: "Please try again later, or use script instead.",
+          description: "Products for every country added successfully",
         });
       } catch (error: unknown) {
         console.error(error);
@@ -72,28 +77,20 @@ function App() {
           setProducts((prev) => prev.filter((item) => item.main_id !== main_id))
         }
         onChange={(product) => {
-          setProducts((prev) =>
-            prev.map((item) => {
-              if (item.main_id === product.main_id) {
-                return {
-                  ...item,
-                  src: product.src,
-                };
-              }
-              return item;
-            })
-          );
-          setProducts((prev) =>
-            prev.map((item) => {
-              if (item.main_id === product.main_id) {
-                return {
-                  ...item,
-                  src: product.src,
-                };
-              }
-              return item;
-            })
-          );
+          console.log(product);
+
+          const update_product = (item: TProduct) => {
+            if (item.main_id === product.main_id) {
+              return {
+                ...item,
+                src: product.src,
+              };
+            }
+            return item;
+          };
+
+          setProducts((prev) => prev.map(update_product));
+          setAllProducts((prev) => prev.map(update_product));
         }}
         allProducts={allProducts}
         products={products}

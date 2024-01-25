@@ -14,7 +14,7 @@ const ProductCart = ({ product, onChange, onDelete }: TProductCart) => {
   const [open, setIsOpen] = useState(false);
 
   return (
-    <div className="flex gap-2 w-full border-2 group mb-2 overflow-hidden rounded-lg bg-slate-100 max-h-48">
+    <div className="flex gap-2 w-full border-2 group mb-2 overflow-hidden rounded-lg bg-white max-h-48">
       <div className="md:w-[20%] w-[35%] overflow-hidden">
         <img src={product.src} className="object-cover w-full h-full" />
       </div>

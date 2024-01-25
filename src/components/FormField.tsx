@@ -9,7 +9,7 @@ type TFormField = {
   isRequired: boolean;
   type: HTMLInputTypeAttribute;
   placeholder: string;
-  value: string;
+  value?: string;
 };
 
 const FormField = ({

@@ -7,7 +7,6 @@ import {
   SheetFooter,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
 } from "@/components/ui/sheet";
 import { useToast } from "@/components/ui/use-toast";
 import FormField from "./FormField";
@@ -24,20 +23,22 @@ const HandleProductChange = ({
   product,
   open,
   onOpenChange,
+  onChange
 }: THandleProductChange) => {
   const { toast } = useToast();
 
   const onSubmit = (form: FormData) => {
-    let product = {} as TProduct;
+    let new_product = {...product} as TProduct;
     for (const [key, value] of form.entries()) {
       let k = key as keyof TProduct;
       let v = value as string;
-      product[k] = v;
+      new_product[k] = v;
     }
 
+    onChange(new_product)
     toast({
       title: "Form submission",
-      description: "Product was successfully added",
+      description: "Product image successfully updated.",
     });
   };
 
