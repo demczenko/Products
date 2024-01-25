@@ -89,7 +89,7 @@ const ProductCard = ({ isLoading, onSubmit }: TProductCard) => {
                 )}
               </div>
               <CardFooter className="px-0 pt-6 pb-0 flex justify-between">
-                <Button disabled={isLoading} type="submit">
+                <Button className="w-full" disabled={isLoading} type="submit">
                   {isLoading ? (
                     <Loader className="animate-spin"></Loader>
                   ) : (
