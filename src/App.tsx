@@ -7,7 +7,7 @@ import ProductsList from "./components/ProductsList";
 function App() {
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState<TProduct[]>([]);
-  const [product, setProduct] = useState<TProduct[]>();
+  const [product, setProduct] = useState<TProduct[]>([]);
   const [allProducts, setAllProducts] = useState<TProduct[]>([]);
   const { toast } = useToast();
 
@@ -52,14 +52,17 @@ function App() {
           description: "Please try again later, or use script instead.",
         });
       } finally {
+        setProduct([]);
         setLoading(false);
       }
     }
 
-    if (products.length) {
+    if (product.length) {
       getData();
     }
-  }, [products]);
+  }, [product]);
+
+  console.log(allProducts);
 
   return (
     <>
@@ -68,6 +71,30 @@ function App() {
         onDelete={(main_id) =>
           setProducts((prev) => prev.filter((item) => item.main_id !== main_id))
         }
+        onChange={(product) => {
+          setProducts((prev) =>
+            prev.map((item) => {
+              if (item.main_id === product.main_id) {
+                return {
+                  ...item,
+                  src: product.src,
+                };
+              }
+              return item;
+            })
+          );
+          setProducts((prev) =>
+            prev.map((item) => {
+              if (item.main_id === product.main_id) {
+                return {
+                  ...item,
+                  src: product.src,
+                };
+              }
+              return item;
+            })
+          );
+        }}
         allProducts={allProducts}
         products={products}
       />

@@ -39,7 +39,7 @@ const ProductCard = ({ isLoading, onSubmit }: TProductCard) => {
               onSubmit={(ev) => {
                 ev.preventDefault();
                 const form = new FormData(ev.target as HTMLFormElement);
-
+                
                 for (const [_, value] of form.entries()) {
                   if ((value as string).trim().length === 0) {
                     toast({

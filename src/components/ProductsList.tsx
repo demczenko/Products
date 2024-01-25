@@ -1,6 +1,6 @@
 import { Copy, Download } from "lucide-react";
 import Container from "./Container";
-import Product from "./Product";
+import ProductCart from "./ProductCart";
 import { Button } from "./ui/button";
 import { ScrollArea } from "./ui/scroll-area";
 import { TProduct } from "@/types/Product";
@@ -9,11 +9,13 @@ import { useToast } from "./ui/use-toast";
 const ProductsList = ({
   products,
   onDelete,
+  onChange,
   allProducts,
 }: {
   allProducts: TProduct[];
   products: TProduct[];
   onDelete: (id: string) => void;
+  onChange: (product: TProduct) => void;
 }) => {
   const { toast } = useToast();
 
@@ -34,14 +36,14 @@ const ProductsList = ({
   };
 
   const onCopyFormula = async () => {
-    const response = await fetch("formula.js")
-    const data = await response.blob()
-    const download = URL.createObjectURL(data)
+    const response = await fetch("formula.js");
+    const data = await response.blob();
+    const download = URL.createObjectURL(data);
 
-    const a = document.createElement("a")
-    a.href = download
-    a.setAttribute("download", "parse")
-    a.click()
+    const a = document.createElement("a");
+    a.href = download;
+    a.setAttribute("download", "parse");
+    a.click();
 
     toast({
       title: "Copied successfully",
@@ -75,10 +77,11 @@ const ProductsList = ({
         </div>
         <ScrollArea className="h-[98%]">
           {products?.map((product, i) => (
-            <Product
+            <ProductCart
+              product={product}
               key={product.main_id + i}
               onDelete={onDelete}
-              {...product}
+              onChange={onChange}
             />
           ))}
         </ScrollArea>
