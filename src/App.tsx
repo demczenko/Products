@@ -5,14 +5,11 @@ import { TProduct, TSlave } from "./types/Product";
 import ProductsList from "./components/ProductsList";
 
 function App() {
-  const [server, setServer] = useState("https://beliani.us:7777");
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState<TProduct[]>([]);
   const [product, setProduct] = useState<TProduct[]>([]);
   const [allProducts, setAllProducts] = useState<TSlave[]>([]);
   const { toast } = useToast();
-
-  console.log(server);
 
   const onSubmit = (form: FormData, cb: () => void) => {
     let product = {} as TProduct;
@@ -37,7 +34,7 @@ function App() {
     async function getData() {
       try {
         setLoading(true);
-        const response = await fetch(`${server}/get-products/`, {
+        const response = await fetch(`https://beliani.us:7777/get-products/`, {
           method: "POST",
           body: JSON.stringify(product),
           headers: {
@@ -77,12 +74,7 @@ function App() {
 
   return (
     <>
-      <ProductCard
-        server={server}
-        setServer={(server) => setServer(server)}
-        isLoading={loading}
-        onSubmit={onSubmit}
-      />
+      <ProductCard isLoading={loading} onSubmit={onSubmit} />
       <ProductsList
         onDelete={(main_id) => {
           const delete_product = (item: any) => item.main_id !== main_id;
