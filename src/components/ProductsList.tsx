@@ -36,15 +36,14 @@ const ProductsList = ({
   };
 
   const onCopyFormula = async () => {
-    const response = await fetch("formula.js");
-    const data = await response.blob();
-    const download = URL.createObjectURL(data);
+    const response = await fetch(
+      "https://raw.githubusercontent.com/demczenko/script/main/parse.js"
+    );
+    const data = await response.text();
 
-    const a = document.createElement("a");
-    a.href = download;
-    a.setAttribute("download", "parse");
-    a.click();
-
+    window.navigator.clipboard.writeText(
+      "const ids = " + JSON.stringify(products) + data
+    );
     toast({
       title: "Copied successfully",
       description: "Function has been successfully download",
@@ -65,15 +64,15 @@ const ProductsList = ({
               <Button onClick={onCopy} variant={"ghost"} size={"sm"}>
                 Main products <Copy className="w-4 h-4 ml-2" />
               </Button>
-              <Button onClick={onCopyFormula} variant={"ghost"} size={"sm"}>
-                Script <Download className="w-4 h-4 ml-2" />
-              </Button>
               {allProducts.length > 0 && (
                 <Button onClick={onCopyAll} variant={"ghost"} size={"sm"}>
                   All products
                   <Copy className="w-4 h-4 ml-2" />
                 </Button>
               )}
+              <Button onClick={onCopyFormula} variant={"ghost"} size={"sm"}>
+                Script <Download className="w-4 h-4 ml-2" />
+              </Button>
             </div>
           )}
         </div>

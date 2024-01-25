@@ -29,7 +29,7 @@ function App() {
     });
     cb();
   };
-
+  
   useEffect(() => {
     async function getData() {
       try {

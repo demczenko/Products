@@ -13,21 +13,17 @@ import { useToast } from "@/components/ui/use-toast";
 import { Switch } from "./ui/switch";
 import FormField from "./FormField";
 import Container from "./Container";
-import { Loader, Settings } from "lucide-react";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Input } from "./ui/input";
+import { Loader } from "lucide-react";
 
 type TProductCard = {
   onSubmit: (ev: FormData, cb: () => void) => void;
   isLoading: boolean;
 };
 
-const ProductCard = ({ isLoading, onSubmit }: TProductCard) => {
-  const [error, setError] = useState(false);
+const ProductCard = ({
+  isLoading,
+  onSubmit,
+}: TProductCard) => {
   const [firstPart, setFirstPart] = useState("");
   const [secondPart, setSecondPart] = useState("");
   const [isTableName, setTableName] = useState<boolean>(false);
