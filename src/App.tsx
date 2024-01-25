@@ -4,7 +4,6 @@ import { useToast } from "./components/ui/use-toast";
 import { TProduct, TSlave } from "./types/Product";
 import ProductsList from "./components/ProductsList";
 
-
 function App() {
   const [server, setServer] = useState("https://beliani.us:7777");
   const [loading, setLoading] = useState(false);
@@ -62,6 +61,9 @@ function App() {
         }
       } catch (error: unknown) {
         console.error(error);
+        setProducts((prev) =>
+          prev.filter((item) => item.main_id !== product[0].main_id)
+        );
         toast({
           variant: "destructive",
           title: "Something went wrong",
@@ -81,7 +83,7 @@ function App() {
   return (
     <>
       <ProductCard
-      server={server}
+        server={server}
         setServer={(server) => setServer(server)}
         isLoading={loading}
         onSubmit={onSubmit}
