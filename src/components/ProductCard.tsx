@@ -53,7 +53,7 @@ const ProductCard = ({ server, setServer, isLoading, onSubmit }: TProductCard) =
                   <Input
                   placeholder="enter custom endpoint"
                     className="text-left text-xs h-9"
-                    onChange={(ev) => setServer(ev.target.value)}
+                    onChange={(ev) => setServer("http://" + ev.target.value)}
                   />
                   <Button
                     size={"sm"}

@@ -12,6 +12,8 @@ function App() {
   const [allProducts, setAllProducts] = useState<TSlave[]>([]);
   const { toast } = useToast();
 
+  console.log(server);
+
   const onSubmit = (form: FormData, cb: () => void) => {
     let product = {} as TProduct;
     for (const [key, value] of form.entries()) {
@@ -50,17 +52,9 @@ function App() {
             description: "Products for every country added successfully",
           });
         } else {
-          setProducts((prev) =>
-            prev.filter((item) => item.main_id !== product[0].main_id)
-          );
-          toast({
-            variant: "destructive",
-            title: "Something went wrong",
-            description: "Please try again later, or use script instead.",
-          });
+          throw new Error("Products not found.");
         }
       } catch (error: unknown) {
-        console.error(error);
         setProducts((prev) =>
           prev.filter((item) => item.main_id !== product[0].main_id)
         );
@@ -69,6 +63,7 @@ function App() {
           title: "Something went wrong",
           description: "Please try again later, or use script instead.",
         });
+        console.error(error);
       } finally {
         setProduct([]);
         setLoading(false);
