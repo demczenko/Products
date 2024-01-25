@@ -4,12 +4,9 @@ import { useToast } from "./components/ui/use-toast";
 import { TProduct, TSlave } from "./types/Product";
 import ProductsList from "./components/ProductsList";
 
-const ORIGINS = {
-  beliani: "https://beliani.us:7777",
-  local: "http://localhost:7777",
-};
 
 function App() {
+  const [server, setServer] = useState("https://beliani.us:7777");
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState<TProduct[]>([]);
   const [product, setProduct] = useState<TProduct[]>([]);
@@ -39,7 +36,7 @@ function App() {
     async function getData() {
       try {
         setLoading(true);
-        const response = await fetch(`${ORIGINS.local}/get-products/`, {
+        const response = await fetch(`${server}/get-products/`, {
           method: "POST",
           body: JSON.stringify(product),
           headers: {
@@ -54,6 +51,9 @@ function App() {
             description: "Products for every country added successfully",
           });
         } else {
+          setProducts((prev) =>
+            prev.filter((item) => item.main_id !== product[0].main_id)
+          );
           toast({
             variant: "destructive",
             title: "Something went wrong",
@@ -82,7 +82,12 @@ function App() {
 
   return (
     <>
-      <ProductCard isLoading={loading} onSubmit={onSubmit} />
+      <ProductCard
+      server={server}
+        setServer={(server) => setServer(server)}
+        isLoading={loading}
+        onSubmit={onSubmit}
+      />
       <ProductsList
         onDelete={(main_id) => {
           const delete_product = (item: any) => item.main_id !== main_id;

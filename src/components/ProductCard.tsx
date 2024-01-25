@@ -13,14 +13,22 @@ import { useToast } from "@/components/ui/use-toast";
 import { Switch } from "./ui/switch";
 import FormField from "./FormField";
 import Container from "./Container";
-import { Loader } from "lucide-react";
+import { Loader, Settings } from "lucide-react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Input } from "./ui/input";
 
 type TProductCard = {
   onSubmit: (ev: FormData, cb: () => void) => void;
   isLoading: boolean;
+  setServer: (value: string) => void;
+  server: string;
 };
 
-const ProductCard = ({ isLoading, onSubmit }: TProductCard) => {
+const ProductCard = ({ server, setServer, isLoading, onSubmit }: TProductCard) => {
   const [firstPart, setFirstPart] = useState("");
   const [secondPart, setSecondPart] = useState("");
   const [isTableName, setTableName] = useState<boolean>(false);
@@ -31,7 +39,32 @@ const ProductCard = ({ isLoading, onSubmit }: TProductCard) => {
       <div className="px-2">
         <Card className="min-w-[380px]">
           <CardHeader>
-            <CardTitle>Create products</CardTitle>
+            <div className="flex justify-between">
+              <CardTitle>Create products</CardTitle>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button size={"sm"} variant="outline">
+                    <Settings className="w-4 h-4" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-fit space-y-2 flex flex-col">
+                  <p className="text-gray-800 font-semibold text-sm m-0">Selected: </p>
+                  <p className="text-gray-800 font-semibold text-xs mt-0">{server}</p>
+                  <Input
+                  placeholder="enter custom endpoint"
+                    className="text-left text-xs h-9"
+                    onChange={(ev) => setServer(ev.target.value)}
+                  />
+                  <Button
+                    size={"sm"}
+                    className={`text-left block`}
+                    variant={"outline"}
+                    onClick={() => setServer("https://beliani.us:7777")}>
+                    Beliani Us
+                  </Button>
+                </PopoverContent>
+              </Popover>
+            </div>
             <CardDescription>
               Get all product for your newsletter in minutes
             </CardDescription>
