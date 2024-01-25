@@ -53,11 +53,13 @@ const ProductsList = ({
 
   return (
     <Container align="items-start">
-      <div className="w-full h-full bg-slate-200 p-2">
+      <div className="w-full h-screen bg-slate-200 p-2">
         <div className="flex justify-between items-center">
-          <h2 className="text-3xl font-semibold tracking-tight mb-2">
-            Products
-          </h2>
+          {products.length > 0 && (
+            <h2 className="text-3xl font-semibold tracking-tight mb-2">
+              Products
+            </h2>
+          )}
           {products.length > 0 && (
             <div className="flex items-center gap-2">
               <Button onClick={onCopy} variant={"ghost"} size={"sm"}>
@@ -75,7 +77,7 @@ const ProductsList = ({
             </div>
           )}
         </div>
-        <ScrollArea className="h-[98%]">
+        <ScrollArea className="h-[95%]">
           {products?.map((product, i) => (
             <ProductCart
               allProducts={allProducts}

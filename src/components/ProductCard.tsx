@@ -28,7 +28,13 @@ type TProductCard = {
   server: string;
 };
 
-const ProductCard = ({ server, setServer, isLoading, onSubmit }: TProductCard) => {
+const ProductCard = ({
+  server,
+  setServer,
+  isLoading,
+  onSubmit,
+}: TProductCard) => {
+  const [error, setError] = useState(false);
   const [firstPart, setFirstPart] = useState("");
   const [secondPart, setSecondPart] = useState("");
   const [isTableName, setTableName] = useState<boolean>(false);
@@ -48,12 +54,24 @@ const ProductCard = ({ server, setServer, isLoading, onSubmit }: TProductCard) =
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-fit space-y-2 flex flex-col">
-                  <p className="text-gray-800 font-semibold text-sm m-0">Selected: </p>
-                  <p className="text-gray-800 font-semibold text-xs mt-0">{server}</p>
+                  <p className="text-gray-800 font-semibold text-sm m-0">
+                    Selected:{" "}
+                  </p>
+                  <p className="text-gray-800 font-semibold text-xs mt-0">
+                    {server}
+                  </p>
                   <Input
-                  placeholder="enter custom endpoint"
+                    type="url"
+                    placeholder="enter custom endpoint"
                     className="text-left text-xs h-9"
-                    onChange={(ev) => setServer("http://" + ev.target.value)}
+                    onChange={(ev) => {
+                      if (ev.target.value.includes("http://")) {
+                        setServer(ev.target.value);
+                        setError(false);
+                      } else {
+                        setError(true);
+                      }
+                    }}
                   />
                   <Button
                     size={"sm"}
@@ -62,6 +80,9 @@ const ProductCard = ({ server, setServer, isLoading, onSubmit }: TProductCard) =
                     onClick={() => setServer("https://beliani.us:7777")}>
                     Beliani Us
                   </Button>
+                  {error && (
+                    <p className="text-xs font-semibold text-red-400">http:// required</p>
+                  )}
                 </PopoverContent>
               </Popover>
             </div>
