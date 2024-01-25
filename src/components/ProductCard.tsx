@@ -21,13 +21,15 @@ type TProductCard = {
 };
 
 const ProductCard = ({ isLoading, onSubmit }: TProductCard) => {
+  const [firstPart, setFirstPart] = useState("");
+  const [secondPart, setSecondPart] = useState("");
   const [isTableName, setTableName] = useState<boolean>(false);
   const { toast } = useToast();
 
   return (
     <Container align="items-center">
       <div className="px-2">
-        <Card className="max-w-[480px]">
+        <Card className="min-w-[380px]">
           <CardHeader>
             <CardTitle>Create products</CardTitle>
             <CardDescription>
@@ -39,7 +41,7 @@ const ProductCard = ({ isLoading, onSubmit }: TProductCard) => {
               onSubmit={(ev) => {
                 ev.preventDefault();
                 const form = new FormData(ev.target as HTMLFormElement);
-                
+
                 for (const [_, value] of form.entries()) {
                   if ((value as string).trim().length === 0) {
                     toast({
@@ -50,7 +52,8 @@ const ProductCard = ({ isLoading, onSubmit }: TProductCard) => {
                     return;
                   }
                 }
-
+                setFirstPart("");
+                setSecondPart("");
                 onSubmit(form, () => (ev.target as HTMLFormElement).reset());
               }}>
               <div className="grid w-full items-center gap-4">
@@ -62,14 +65,37 @@ const ProductCard = ({ isLoading, onSubmit }: TProductCard) => {
                   name="main_id"
                   title="Master Id"
                 />
-                <FormField
-                  placeholder="Src of product image"
-                  type={"text"}
-                  id="src"
-                  isRequired={true}
-                  name="src"
-                  title="Product Src"
-                />
+                <div className="flex flex-col gap-2">
+                  <div className="mb-2">
+                    <h2 className="text-xl font-semibold tracking-tight">
+                      Master src
+                    </h2>
+                    {firstPart && firstPart && (
+                      <p className="text-xs text-neutral-600 font-semibold">
+                        {firstPart}
+                        {secondPart}
+                      </p>
+                    )}
+                  </div>
+                  <FormField
+                    placeholder="First part of the src link"
+                    type={"url"}
+                    id="src_origin"
+                    isRequired={true}
+                    name="src_origin"
+                    title="Origin Src"
+                    onChange={(ev) => setFirstPart(ev.target.value)}
+                  />
+                  <FormField
+                    placeholder="Second part of the src link"
+                    type={"text"}
+                    id="src_name"
+                    isRequired={true}
+                    name="src_name"
+                    title="Name Src"
+                    onChange={(ev) => setSecondPart(ev.target.value)}
+                  />
+                </div>
                 <div className="flex items-center space-x-2">
                   <Switch
                     onClick={() => setTableName(!isTableName)}

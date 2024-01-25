@@ -1,6 +1,6 @@
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
-import { HTMLInputTypeAttribute } from "react";
+import { ChangeEvent, HTMLInputTypeAttribute } from "react";
 
 type TFormField = {
   id: string;
@@ -10,6 +10,7 @@ type TFormField = {
   type: HTMLInputTypeAttribute;
   placeholder: string;
   value?: string;
+  onChange?: (ev: ChangeEvent<HTMLInputElement>) => void;
 };
 
 const FormField = ({
@@ -20,6 +21,7 @@ const FormField = ({
   type,
   placeholder,
   value,
+  onChange,
 }: TFormField) => {
   return (
     <div className="flex flex-col space-y-1.5">
@@ -32,6 +34,7 @@ const FormField = ({
         type={type}
         id={id}
         placeholder={placeholder}
+        onChange={onChange}
       />
     </div>
   );

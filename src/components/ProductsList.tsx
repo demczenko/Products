@@ -3,7 +3,7 @@ import Container from "./Container";
 import ProductCart from "./ProductCart";
 import { Button } from "./ui/button";
 import { ScrollArea } from "./ui/scroll-area";
-import { TProduct } from "@/types/Product";
+import { TProduct, TSlave } from "@/types/Product";
 import { useToast } from "./ui/use-toast";
 
 const ProductsList = ({
@@ -12,7 +12,7 @@ const ProductsList = ({
   onChange,
   allProducts,
 }: {
-  allProducts: TProduct[];
+  allProducts: TSlave[];
   products: TProduct[];
   onDelete: (id: string) => void;
   onChange: (product: TProduct) => void;
@@ -78,6 +78,7 @@ const ProductsList = ({
         <ScrollArea className="h-[98%]">
           {products?.map((product, i) => (
             <ProductCart
+              allProducts={allProducts}
               product={product}
               key={product.main_id + i}
               onDelete={onDelete}

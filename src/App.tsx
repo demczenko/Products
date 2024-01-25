@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import ProductCard from "./components/ProductCard";
 import { useToast } from "./components/ui/use-toast";
-import { TProduct } from "./types/Product";
+import { TProduct, TSlave } from "./types/Product";
 import ProductsList from "./components/ProductsList";
 
 const ORIGINS = {
@@ -13,7 +13,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState<TProduct[]>([]);
   const [product, setProduct] = useState<TProduct[]>([]);
-  const [allProducts, setAllProducts] = useState<TProduct[]>([]);
+  const [allProducts, setAllProducts] = useState<TSlave[]>([]);
   const { toast } = useToast();
 
   const onSubmit = (form: FormData, cb: () => void) => {
@@ -23,6 +23,8 @@ function App() {
       let v = value as string;
       product[k] = v;
     }
+
+    product["src"] = product["src_origin"] + product["src_name"];
 
     setProducts((prev) => [...prev, product]);
     setProduct([product]);
@@ -45,14 +47,23 @@ function App() {
           },
         });
         const parsed_products = await response.json();
-        setAllProducts((prev) => [...prev, ...parsed_products]);
-        toast({
-          title: "New products added successfully.",
-          description: "Products for every country added successfully",
-        });
+        if (parsed_products.length > 0) {
+          setAllProducts((prev) => [...prev, ...parsed_products]);
+          toast({
+            title: "New products added successfully.",
+            description: "Products for every country added successfully",
+          });
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Something went wrong",
+            description: "Please try again later, or use script instead.",
+          });
+        }
       } catch (error: unknown) {
         console.error(error);
         toast({
+          variant: "destructive",
           title: "Something went wrong",
           description: "Please try again later, or use script instead.",
         });
@@ -67,19 +78,19 @@ function App() {
     }
   }, [product]);
 
-  console.log(allProducts);
+  console.log(products);
 
   return (
     <>
       <ProductCard isLoading={loading} onSubmit={onSubmit} />
       <ProductsList
-        onDelete={(main_id) =>
-          setProducts((prev) => prev.filter((item) => item.main_id !== main_id))
-        }
+        onDelete={(main_id) => {
+          const delete_product = (item: any) => item.main_id !== main_id;
+          setProducts((prev) => prev.filter(delete_product));
+          setAllProducts((prev) => prev.filter(delete_product));
+        }}
         onChange={(product) => {
-          console.log(product);
-
-          const update_product = (item: TProduct) => {
+          const update_product = (item: any) => {
             if (item.main_id === product.main_id) {
               return {
                 ...item,
