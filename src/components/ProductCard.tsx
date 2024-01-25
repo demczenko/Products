@@ -13,12 +13,14 @@ import { useToast } from "@/components/ui/use-toast";
 import { Switch } from "./ui/switch";
 import FormField from "./FormField";
 import Container from "./Container";
+import { Loader } from "lucide-react";
 
 type TProductCard = {
   onSubmit: (ev: FormData, cb: () => void) => void;
+  isLoading: boolean;
 };
 
-const ProductCard = ({ onSubmit }: TProductCard) => {
+const ProductCard = ({ isLoading, onSubmit }: TProductCard) => {
   const [isTableName, setTableName] = useState<boolean>(false);
   const { toast } = useToast();
 
@@ -87,7 +89,13 @@ const ProductCard = ({ onSubmit }: TProductCard) => {
                 )}
               </div>
               <CardFooter className="px-0 pt-6 pb-0 flex justify-between">
-                <Button type="submit">Create product</Button>
+                <Button disabled={isLoading} type="submit">
+                  {isLoading ? (
+                    <Loader className="animate-spin"></Loader>
+                  ) : (
+                    "Create product"
+                  )}
+                </Button>
               </CardFooter>
             </form>
           </CardContent>

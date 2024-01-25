@@ -62,7 +62,7 @@ const ProductsList = ({
                 Main products <Copy className="w-4 h-4 ml-2" />
               </Button>
               <Button onClick={onCopyFormula} variant={"ghost"} size={"sm"}>
-                Formula <Download className="w-4 h-4 ml-2" />
+                Script <Download className="w-4 h-4 ml-2" />
               </Button>
               {allProducts.length > 0 && (
                 <Button onClick={onCopyAll} variant={"ghost"} size={"sm"}>
