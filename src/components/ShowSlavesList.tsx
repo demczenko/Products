@@ -8,19 +8,16 @@ import {
 
 import { PropsWithChildren } from "react";
 import { ConfigureSlaves } from "./ConfigureSlaves";
-import { TSlave } from "@/types/Product";
 
 const ShowSlavesList = ({
   children,
   onOpenChange,
   open,
   main_id,
-  slaves,
 }: PropsWithChildren & {
   open: boolean;
   onOpenChange: () => void;
   main_id: string;
-  slaves: TSlave[];
 }) => {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -32,7 +29,7 @@ const ShowSlavesList = ({
               Explore slaves of master id: {main_id}
             </SheetDescription>
           </div>
-          <ConfigureSlaves slaves={slaves} />
+          <ConfigureSlaves />
         </SheetHeader>
         {children}
       </SheetContent>

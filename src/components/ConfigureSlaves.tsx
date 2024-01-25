@@ -4,16 +4,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { TSlave } from "@/types/Product";
-import { useState } from "react";
 
-type TConfigureSlaves = {
-  slaves: TSlave[];
-};
-
-export function ConfigureSlaves({ slaves }: TConfigureSlaves) {
-  const [selectedSlaves, setSelectedSlaves] = useState<string[]>([]);
-  
+export function ConfigureSlaves() {
   return (
     <Popover>
       <PopoverTrigger asChild>

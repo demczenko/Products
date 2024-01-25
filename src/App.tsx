@@ -78,8 +78,6 @@ function App() {
     }
   }, [product]);
 
-  console.log(products);
-
   return (
     <>
       <ProductCard

@@ -64,7 +64,6 @@ const ProductCart = ({
         main_id={product.main_id}
         open={isSlavesOpen}
         onOpenChange={setIsSlavesOpen as () => void}
-        slaves={allProducts}
         children={
           <SlavesList
             slaves={allProducts.filter(
