@@ -1,6 +1,6 @@
 import { TProduct, TSlave } from "@/types/Product";
 import { Button } from "./ui/button";
-import { Edit, RefreshCwIcon, RefreshCwOffIcon, X } from "lucide-react";
+import { Edit, RefreshCwIcon, X } from "lucide-react";
 import { useState } from "react";
 import HandleProductChange from "./HandleProductChange";
 import ShowSlavesList from "./ShowSlavesList";
