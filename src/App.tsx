@@ -29,7 +29,7 @@ function App() {
     });
     cb();
   };
-  
+
   useEffect(() => {
     async function getData() {
       try {
@@ -42,7 +42,8 @@ function App() {
           },
         });
         const parsed_products = await response.json();
-        if (parsed_products.length > 0) {
+
+        if (parsed_products.length > 1) {
           setAllProducts((prev) => [...prev, ...parsed_products]);
           toast({
             title: "New products added successfully.",
@@ -52,9 +53,6 @@ function App() {
           throw new Error("Products not found.");
         }
       } catch (error: unknown) {
-        setProducts((prev) =>
-          prev.filter((item) => item.main_id !== product[0].main_id)
-        );
         toast({
           variant: "destructive",
           title: "Something went wrong",
@@ -76,6 +74,8 @@ function App() {
     <>
       <ProductCard isLoading={loading} onSubmit={onSubmit} />
       <ProductsList
+        setProduct={(product) => setProduct([product])}
+        isLoading={loading}
         onDelete={(main_id) => {
           const delete_product = (item: any) => item.main_id !== main_id;
           setProducts((prev) => prev.filter(delete_product));

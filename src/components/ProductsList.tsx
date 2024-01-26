@@ -11,7 +11,11 @@ const ProductsList = ({
   onDelete,
   onChange,
   allProducts,
+  isLoading,
+  setProduct,
 }: {
+  setProduct: (product: TProduct) => void;
+  isLoading: boolean;
   allProducts: TSlave[];
   products: TProduct[];
   onDelete: (id: string) => void;
@@ -52,7 +56,7 @@ const ProductsList = ({
 
   return (
     <Container align="items-start">
-      <div className="w-full h-screen bg-slate-200 p-2">
+      <div className="w-full h-full bg-slate-200 p-2">
         <div className="flex justify-between items-center">
           {products.length > 0 && (
             <h2 className="text-3xl font-semibold tracking-tight mb-2">
@@ -79,6 +83,8 @@ const ProductsList = ({
         <ScrollArea className="h-[95%]">
           {products?.map((product, i) => (
             <ProductCart
+              onRefetch={() => setProduct(product)}
+              isLoading={isLoading}
               allProducts={allProducts}
               product={product}
               key={product.main_id + i}

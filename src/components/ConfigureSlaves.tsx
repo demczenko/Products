@@ -4,8 +4,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { TSlave } from "@/types/Product";
+import { Toggle } from "./ui/toggle";
 
-export function ConfigureSlaves() {
+export function ConfigureSlaves({ slaves }: { slaves: TSlave[] }) {
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -20,31 +22,13 @@ export function ConfigureSlaves() {
             </p>
           </div>
           <div className="grid gap-2">
-            link constructor todo
-            {/* <div className="grid grid-cols-3 items-center gap-4">
-              <Label htmlFor="maxWidth">Max. width</Label>
-              <Input
-                id="maxWidth"
-                defaultValue="300px"
-                className="col-span-2 h-8"
-              />
-            </div>
             <div className="grid grid-cols-3 items-center gap-4">
-              <Label htmlFor="height">Height</Label>
-              <Input
-                id="height"
-                defaultValue="25px"
-                className="col-span-2 h-8"
-              />
+              {slaves.map((slave, i) => (
+                <Toggle variant={"outline"} key={i} aria-label="Toggle italic">
+                  <p>{slave.country}</p>
+                </Toggle>
+              ))}
             </div>
-            <div className="grid grid-cols-3 items-center gap-4">
-              <Label htmlFor="maxHeight">Max. height</Label>
-              <Input
-                id="maxHeight"
-                defaultValue="none"
-                className="col-span-2 h-8"
-              />
-            </div> */}
           </div>
         </div>
       </PopoverContent>
