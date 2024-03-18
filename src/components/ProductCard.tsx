@@ -14,19 +14,18 @@ import { Switch } from "./ui/switch";
 import FormField from "./FormField";
 import Container from "./Container";
 import { Loader } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger } from "./ui/select";
 
 type TProductCard = {
   onSubmit: (ev: FormData, cb: () => void) => void;
   isLoading: boolean;
 };
 
-const ProductCard = ({
-  isLoading,
-  onSubmit,
-}: TProductCard) => {
-  const [firstPart, setFirstPart] = useState("");
-  const [secondPart, setSecondPart] = useState("");
-  const [isTableName, setTableName] = useState<boolean>(false);
+const ProductCard = ({ isLoading, onSubmit }: TProductCard) => {
+  const [selectedServer, setDefaultServer] = useState<string>(
+    "https://upload.pictureserver.net/static/2024/"
+  );
+  const [isUniq, setUniq] = useState<boolean>(false);
   const { toast } = useToast();
 
   return (
@@ -55,8 +54,7 @@ const ProductCard = ({
                     return;
                   }
                 }
-                setFirstPart("");
-                setSecondPart("");
+                form.append("is_unique", JSON.stringify(isUniq));
                 onSubmit(form, () => (ev.target as HTMLFormElement).reset());
               }}>
               <div className="grid w-full items-center gap-4">
@@ -69,25 +67,38 @@ const ProductCard = ({
                   title="Master Id"
                 />
                 <div className="flex flex-col gap-2">
-                  <div className="mb-2">
-                    <h2 className="text-xl font-semibold tracking-tight">
+                  <div className="mb-2 flex items-center gap-2">
+                    <h2 className="text-xl font-semibold tracking-tight grow shrink-0">
                       Master src
                     </h2>
-                    {firstPart && firstPart && (
-                      <p className="text-xs text-neutral-600 font-semibold">
-                        {firstPart}
-                        {secondPart}
-                      </p>
-                    )}
+                    <Select
+                      onValueChange={(server: string) =>
+                        setDefaultServer(server)
+                      }>
+                      <SelectTrigger>Select server</SelectTrigger>
+                      <SelectContent>
+                        <SelectItem
+                          value={
+                            "https://upload.pictureserver.net/static/2024/"
+                          }>
+                          Picture server
+                        </SelectItem>
+                        <SelectItem
+                          value={"https://beliani.info/newsletter/2022/"}>
+                          Beliani info
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                   <FormField
                     placeholder="First part of the src link"
                     type={"url"}
                     id="src_origin"
                     isRequired={true}
+                    value={selectedServer}
                     name="src_origin"
                     title="Origin Src"
-                    onChange={(ev) => setFirstPart(ev.target.value)}
+                    onChange={(ev) => setDefaultServer(ev.target.value)}
                   />
                   <FormField
                     placeholder="Second part of the src link"
@@ -96,26 +107,12 @@ const ProductCard = ({
                     isRequired={true}
                     name="src_name"
                     title="Name Src"
-                    onChange={(ev) => setSecondPart(ev.target.value)}
                   />
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Switch
-                    onClick={() => setTableName(!isTableName)}
-                    id="table_name"
-                  />
-                  <Label htmlFor="table_name">Add table name </Label>
+                  <Switch onClick={() => setUniq(!isUniq)} id="is_unique" />
+                  <Label htmlFor="is_unique">Make unique</Label>
                 </div>
-                {isTableName && (
-                  <FormField
-                    placeholder="Table name of product"
-                    type={"text"}
-                    id="table_name"
-                    isRequired={true}
-                    name="table_name"
-                    title="Table name"
-                  />
-                )}
               </div>
               <CardFooter className="px-0 pt-6 pb-0 flex justify-between">
                 <Button className="w-full" disabled={isLoading} type="submit">

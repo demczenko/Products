@@ -1,10 +1,11 @@
 import { TProduct, TSlave } from "@/types/Product";
 import { Button } from "./ui/button";
-import { Edit, RefreshCwIcon, X } from "lucide-react";
+import { Copy, Edit, RefreshCwIcon, X } from "lucide-react";
 import { useState } from "react";
 import HandleProductChange from "./HandleProductChange";
 import ShowSlavesList from "./ShowSlavesList";
 import SlavesList from "./SlavesList";
+import { useToast } from "./ui/use-toast";
 
 type TProductCart = {
   product: TProduct;
@@ -23,6 +24,7 @@ const ProductCart = ({
   onDelete,
   onRefetch,
 }: TProductCart) => {
+  const {toast} = useToast()
   const [open, setIsOpen] = useState(false);
   const [isSlavesOpen, setIsSlavesOpen] = useState(false);
 
@@ -43,6 +45,13 @@ const ProductCart = ({
               variant={"ghost"}>
               Product {product.main_id}
             </Button>
+            <Button variant={"ghost"} className="ml-2" onClick={() => {
+              navigator.clipboard.writeText(product.main_id)
+              toast({
+                title: "Success",
+                description: "Product it copied successfully",
+              });
+            }}><Copy className="w-4 h-4" /></Button>
           </div>
           {product.table_name && (
             <div className="space-y-1">

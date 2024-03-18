@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import ProductCard from "./components/ProductCard";
 import { useToast } from "./components/ui/use-toast";
-import { TProduct, TSlave } from "./types/Product";
+import { TProduct, TProductResponse, TSlave } from "./types/Product";
 import ProductsList from "./components/ProductsList";
 
 function App() {
@@ -9,6 +9,7 @@ function App() {
   const [products, setProducts] = useState<TProduct[]>([]);
   const [product, setProduct] = useState<TProduct[]>([]);
   const [allProducts, setAllProducts] = useState<TSlave[]>([]);
+  const [uniqueProduct, setUniqueProducts] = useState<any[]>([]);
   const { toast } = useToast();
 
   const onSubmit = (form: FormData, cb: () => void) => {
@@ -31,6 +32,20 @@ function App() {
   };
 
   useEffect(() => {
+
+    function confirmCloseWindow(e:BeforeUnloadEvent) {
+      e.preventDefault()
+      e.returnValue = ""
+    }
+
+    window.addEventListener('beforeunload', confirmCloseWindow)
+
+    return () => {
+      window.removeEventListener('beforeunload', confirmCloseWindow)
+    }
+  }, [])
+
+  useEffect(() => {
     async function getData() {
       try {
         setLoading(true);
@@ -44,6 +59,29 @@ function App() {
         const parsed_products = await response.json();
 
         if (parsed_products.length > 1) {
+          let unique_products = {}
+          if (product[0].is_unique !== "false") {
+            const length = allProducts.length;
+            unique_products = parsed_products.map(
+              (product: TProductResponse, i: number) => {
+                let unique_product = {};
+                Object.entries(product).forEach(() => {
+                  let idx = length + i;
+                  unique_product = {
+                    ["src_" + idx]: product["src"],
+                    ["name_" + idx]: product["name"],
+                    ["href_" + idx]: product["href"],
+                    ["highPrice_" + idx]: product["highPrice"],
+                    ["lowPrice_" + idx]: product["lowPrice"],
+                    country: product["country"],
+                  };
+                });
+                return unique_product;
+              }
+            );
+            // @ts-ignore
+            setUniqueProducts((prev) => [...prev, ...unique_products])
+          }
           setAllProducts((prev) => [...prev, ...parsed_products]);
           toast({
             title: "New products added successfully.",
@@ -80,6 +118,7 @@ function App() {
           const delete_product = (item: any) => item.main_id !== main_id;
           setProducts((prev) => prev.filter(delete_product));
           setAllProducts((prev) => prev.filter(delete_product));
+          setUniqueProducts((prev) => prev.filter(delete_product));
         }}
         onChange={(product) => {
           const update_product = (item: any) => {
@@ -94,7 +133,9 @@ function App() {
 
           setProducts((prev) => prev.map(update_product));
           setAllProducts((prev) => prev.map(update_product));
+          setUniqueProducts((prev) => prev.map(update_product));
         }}
+        uniqueProducts={uniqueProduct}
         allProducts={allProducts}
         products={products}
       />

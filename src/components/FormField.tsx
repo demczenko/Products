@@ -10,6 +10,7 @@ type TFormField = {
   type: HTMLInputTypeAttribute;
   placeholder: string;
   value?: string;
+  defaultValue?: string;
   onChange?: (ev: ChangeEvent<HTMLInputElement>) => void;
 };
 
@@ -21,6 +22,7 @@ const FormField = ({
   type,
   placeholder,
   value,
+  defaultValue,
   onChange,
 }: TFormField) => {
   return (
@@ -28,8 +30,9 @@ const FormField = ({
       <Label htmlFor={id}>
         {title} {isRequired && <span className="text-red-300">*</span>}
       </Label>
+
       <Input
-        defaultValue={value}
+        value={value}
         name={name}
         type={type}
         id={id}

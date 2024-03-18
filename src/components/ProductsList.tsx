@@ -11,12 +11,14 @@ const ProductsList = ({
   onDelete,
   onChange,
   allProducts,
+  uniqueProducts,
   isLoading,
   setProduct,
 }: {
   setProduct: (product: TProduct) => void;
   isLoading: boolean;
   allProducts: TSlave[];
+  uniqueProducts: any[];
   products: TProduct[];
   onDelete: (id: string) => void;
   onChange: (product: TProduct) => void;
@@ -33,6 +35,14 @@ const ProductsList = ({
 
   const onCopyAll = () => {
     window.navigator.clipboard.writeText(JSON.stringify(allProducts));
+    toast({
+      title: "Copied successfully",
+      description: "Products has been successfully copied to clipboard",
+    });
+  };
+
+  const onCopyAllUnique = () => {
+    window.navigator.clipboard.writeText(JSON.stringify(uniqueProducts));
     toast({
       title: "Copied successfully",
       description: "Products has been successfully copied to clipboard",
@@ -68,6 +78,12 @@ const ProductsList = ({
               <Button onClick={onCopy} variant={"ghost"} size={"sm"}>
                 Main products <Copy className="w-4 h-4 ml-2" />
               </Button>
+              {uniqueProducts.length > 0 && (
+                <Button onClick={onCopyAllUnique} variant={"ghost"} size={"sm"}>
+                  Unique products
+                  <Copy className="w-4 h-4 ml-2" />
+                </Button>
+              )}
               {allProducts.length > 0 && (
                 <Button onClick={onCopyAll} variant={"ghost"} size={"sm"}>
                   All products
