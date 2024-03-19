@@ -42,7 +42,28 @@ const ProductsList = ({
   };
 
   const onCopyAllUnique = () => {
-    window.navigator.clipboard.writeText(JSON.stringify(uniqueProducts));
+    const group = uniqueProducts.reduce((acc, elem) => {
+      const isCountryExist = acc.find(
+        (item: { country: any }) => item.country === elem.country
+      );
+      if (isCountryExist) {
+        return acc.map((item: { country: any }) => {
+          if (item.country === elem.country) {
+            const new_item = {
+              ...item,
+              ...elem,
+            };
+            return new_item;
+          }
+          return item;
+        });
+      } else {
+        acc.push(elem);
+      }
+
+      return acc;
+    }, []);
+    window.navigator.clipboard.writeText(JSON.stringify(group));
     toast({
       title: "Copied successfully",
       description: "Products has been successfully copied to clipboard",

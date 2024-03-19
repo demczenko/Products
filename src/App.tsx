@@ -32,18 +32,17 @@ function App() {
   };
 
   useEffect(() => {
-
-    function confirmCloseWindow(e:BeforeUnloadEvent) {
-      e.preventDefault()
-      e.returnValue = ""
+    function confirmCloseWindow(e: BeforeUnloadEvent) {
+      e.preventDefault();
+      e.returnValue = "";
     }
 
-    window.addEventListener('beforeunload', confirmCloseWindow)
+    window.addEventListener("beforeunload", confirmCloseWindow);
 
     return () => {
-      window.removeEventListener('beforeunload', confirmCloseWindow)
-    }
-  }, [])
+      window.removeEventListener("beforeunload", confirmCloseWindow);
+    };
+  }, []);
 
   useEffect(() => {
     async function getData() {
@@ -59,28 +58,28 @@ function App() {
         const parsed_products = await response.json();
 
         if (parsed_products.length > 1) {
-          let unique_products = {}
+          let unique_products = {};
           if (product[0].is_unique !== "false") {
-            const length = allProducts.length;
+            const length = products.length;
             unique_products = parsed_products.map(
-              (product: TProductResponse, i: number) => {
+              (product: TProductResponse) => {
                 let unique_product = {};
                 Object.entries(product).forEach(() => {
-                  let idx = length + i;
                   unique_product = {
-                    ["src_" + idx]: product["src"],
-                    ["name_" + idx]: product["name"],
-                    ["href_" + idx]: product["href"],
-                    ["highPrice_" + idx]: product["highPrice"],
-                    ["lowPrice_" + idx]: product["lowPrice"],
+                    ["src_" + length]: product["src"],
+                    ["name_" + length]: product["name"],
+                    ["href_" + length]: product["href"],
+                    ["highPrice_" + length]: product["highPrice"],
+                    ["lowPrice_" + length]: product["lowPrice"],
                     country: product["country"],
+                    ["main_id_" + length]: product["main_id"],
                   };
                 });
                 return unique_product;
               }
             );
             // @ts-ignore
-            setUniqueProducts((prev) => [...prev, ...unique_products])
+            setUniqueProducts((prev) => [...prev, ...unique_products]);
           }
           setAllProducts((prev) => [...prev, ...parsed_products]);
           toast({

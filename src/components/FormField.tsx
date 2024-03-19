@@ -22,7 +22,6 @@ const FormField = ({
   type,
   placeholder,
   value,
-  defaultValue,
   onChange,
 }: TFormField) => {
   return (
